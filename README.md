@@ -39,3 +39,7 @@ To search images, create a GET request at http://localhost:8000/api/v1/images
 If called without a query, it will return all images in the repository that are public.
 
 Otherwise, it will return images that fit within the query.
+
+### Unit tests
+![Unit tests](/assets/tests.gif)
+I created unit tests for the 2 endpoints I made, making sure they contained the right content and received a 200 HTTP response code
