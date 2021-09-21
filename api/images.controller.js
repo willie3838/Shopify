@@ -31,8 +31,8 @@ export default class ImagesController{
                 imageList.push(req.body[el])
             })
             const imageResponse = await ImagesDAO.addImage(imageList)
-
-            res.json({ status: "success" })
+            
+            res.json(imageResponse)
         }
         catch(e){
             res.status(500).json({ error: e.message})

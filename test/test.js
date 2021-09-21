@@ -7,7 +7,7 @@ import ImagesDAO from "../dao/imagesDAO.js"
 
 dotenv.config()
 
-
+const BASE_API = "/api/v1/images"
 const MongoClient = mongodb.MongoClient
 
 chai.should()
@@ -32,7 +32,7 @@ describe('Image APIs', () => {
             .then(async client => {
                 await ImagesDAO.injectDB(client)
                 chai.request(server)
-                    .get("/api/v1/images")
+                    .get(BASE_API)
                     .end((err, response) => {
                         response.should.have.status(200)
                         response.body.should.be.a('object')
@@ -44,7 +44,7 @@ describe('Image APIs', () => {
     })
 
     describe('/POST images', () => {
-        it('it should POST images', (done) => {
+        it('it should POST 1 image', (done) => {
             MongoClient.connect(
                 process.env.URI
             )
@@ -66,13 +66,59 @@ describe('Image APIs', () => {
                 }
 
                 chai.request(server)
-                    .post("/api/v1/images")
+                    .post(BASE_API)
                     .send(image)
                     .end((err, response) => {
                         response.should.have.status(200)
                         response.body.should.be.a('object')
+                        response.body.insertedCount.should.be.eql(1)
+                        
                         done()
                     })
+       
+            })
+            
+        })
+
+
+        it('it should POST multiple images', (done) => {
+            MongoClient.connect(
+                process.env.URI
+            )
+            .catch(err => {
+                console.error(err.stack)
+                process.exit(1)
+            })
+            .then(async client => {
+                await ImagesDAO.injectDB(client)
+
+                let image = {
+                    image1: {
+                        url: "http://test.com",
+                        user: "test me",
+                        category: "unit tests",
+                        name: "testing stuff",
+                        visibility: "public"
+                    },
+                    image2: {
+                        url: "http://test2.com",
+                        user: "test me2",
+                        category: "unit tests",
+                        name: "testing stuff",
+                        visibility: "public"
+                    }
+                }
+
+                chai.request(server)
+                    .post(BASE_API)
+                    .send(image)
+                    .end((err, response) => {
+                        response.should.have.status(200)
+                        response.body.should.be.a('object')
+                        response.body.insertedCount.should.be.above(1)
+                        done()
+                    })
+       
             })
             
         })

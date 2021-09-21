@@ -42,4 +42,8 @@ Otherwise, it will return images that fit within the query.
 
 ### Unit tests
 ![Unit tests](/assets/tests.gif)
-I created unit tests for the 2 endpoints I made, making sure they contained the right content and received a 200 HTTP response code
+I created unit tests for the 2 endpoints I made. 
+
+For the GET request, I checked if the response contained the right content and received a 200 HTTP response code.
+
+For the POST request, I checked if I was able to add a single image and multiple images on top of receiving a 200 HTTP response code.
